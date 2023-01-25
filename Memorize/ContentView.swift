@@ -14,7 +14,7 @@ struct ContentView: View {
                 .stroke(lineWidth:3);
             Text("Hello There").foregroundColor(Color.orange);
             
-        }.padding(.horizontal).foregroundColor(Color.red);
+        }.padding(.horizontal).foregroundColor(Color.red)
 
     }
 }
