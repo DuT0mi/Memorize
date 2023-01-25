@@ -9,15 +9,38 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+         ZStack {
+            RoundedRectangle(cornerRadius: 20.0)
+                .stroke(lineWidth:3);
+            Text("Hello There").foregroundColor(Color.orange);
+            
+        }.padding(.horizontal).foregroundColor(Color.red);
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
