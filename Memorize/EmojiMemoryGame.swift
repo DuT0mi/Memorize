@@ -5,7 +5,6 @@
 //  Created by Dudas Tamas Alex on 2023. 01. 29..
 //
 
-
 // ViewModel
 
 import SwiftUI
