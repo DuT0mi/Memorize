@@ -5,6 +5,8 @@
 //  Created by Dudas Tamas Alex on 2023. 01. 25..
 //
 
+// View
+
 import SwiftUI
 
 struct ContentView: View {
@@ -20,35 +22,10 @@ struct ContentView: View {
                 })
             }.foregroundColor(Color.red) // LazyGrid: fitting
         } // ScrollView
-            Spacer(); // device independent
-            HStack{
-                add;
-                Spacer();
-                remove;
-            }.padding(.horizontal).font(.largeTitle) // Bottom HStack
+            Spacer(); // device independent Bottom HStack
         } // VStack
          .padding(.horizontal)
     } // body View
-    var remove: some View{
-        return  Button(action: {
-            if emojiCount > 1 {
-                emojiCount -= 1;
-                
-            }
-        }, label: {
-            Image(systemName: "minus.circle");
-        });
-    }
-    // more cleaner than "minus"
-    var add: some View{
-         Button{
-            if emojiCount < emojis.count{
-                emojiCount += 1;
-            }
-        }label: {
-            Image(systemName: "plus.circle")
-        };
-    }
 } // ContentView
 
 struct CardView: View{
@@ -60,10 +37,10 @@ struct CardView: View{
             if isFaceUP{
                 shape
                     .fill()
-                    .foregroundColor(Color.white);
+                    .foregroundColor(Color.white);// white is a static var in Color class
                 
                 shape.strokeBorder(lineWidth: 3) // For not cutting the edges (instead of stroke(...) )
-                Text(content).font(.largeTitle)
+                Text(content).font(Font.largeTitle) // .largrTitle is a static var in Font
             }
             else {
                 shape.fill();
