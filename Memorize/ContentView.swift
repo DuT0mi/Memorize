@@ -46,6 +46,8 @@ struct CardView: View{
                 
                 shape.strokeBorder(lineWidth: 3) // For not cutting the edges (instead of stroke(...) )
                 Text(card.content).font(Font.largeTitle) // .largrTitle is a static var in Font
+            } else if card.isMatched{
+                shape.opacity(0);
             }
             else {
                 shape.fill();
