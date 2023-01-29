@@ -18,6 +18,7 @@ class EmojiMemoryGame:ObservableObject {
     }
     @Published private var model: MemoryGame<String> = createMemoryGame();
     
+    
     var cards: Array<MemoryGame<String>.Card>{
         return model.cards;
     }
