@@ -10,15 +10,20 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis: Array<String> = ["🚗","🚕","🏎️","🚖","🚡","🚠","🚲","🛵","🚘","🚃","🚋","🚆","🛰️","🚁","⛵️","🛶","🚤","🛩️","🛥️","🛸","🚀"];
-    @State var emojiCount: Int = 10;
+    @ObservedObject var viewModel: EmojiMemoryGame;
+    
     var body: some View {
         VStack{
             ScrollView { //For not smashing the buttons
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 85))]){
                 // With similar element in "emoji" does not work properly (cuz the similar string ID is the same
-                ForEach(emojis[0..<emojiCount],id:\.self,content:{ emoji in
-                    CardView(content:emoji).aspectRatio(2/3, contentMode: .fit) // 2 units width, 3 units high
+                    ForEach(viewModel.cards,content:{ card in
+                        CardView(card:card)
+                            .aspectRatio(2/3, contentMode: .fit) // 2 units width, 3 units high
+                            .onTapGesture{
+                                // Intents coming here
+                                viewModel.choose(card);
+                            }
                 })
             }.foregroundColor(Color.red) // LazyGrid: fitting
         } // ScrollView
@@ -29,26 +34,23 @@ struct ContentView: View {
 } // ContentView
 
 struct CardView: View{
-    var content: String;
-    @State var isFaceUP: Bool = true;
+    let card:MemoryGame<String>.Card; // let cuz read only
     var body: some View{
+        
         return ZStack {
             let shape: RoundedRectangle = RoundedRectangle(cornerRadius: 20.0);
-            if isFaceUP{
+            if card.isFaceUp{
                 shape
                     .fill()
                     .foregroundColor(Color.white);// white is a static var in Color class
                 
                 shape.strokeBorder(lineWidth: 3) // For not cutting the edges (instead of stroke(...) )
-                Text(content).font(Font.largeTitle) // .largrTitle is a static var in Font
+                Text(card.content).font(Font.largeTitle) // .largrTitle is a static var in Font
             }
             else {
                 shape.fill();
             }
-        }.onTapGesture(perform: {
-            // Also we could not to write out (perform)
-            isFaceUP = !isFaceUP;
-        })
+        }
     }
 }
 
@@ -77,8 +79,9 @@ struct CardView: View{
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame();
+        ContentView(viewModel: game)
             .preferredColorScheme(.light)
-        ContentView().preferredColorScheme(.dark)
+        ContentView(viewModel: game).preferredColorScheme(.dark)
     }
 }
