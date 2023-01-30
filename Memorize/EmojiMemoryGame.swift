@@ -11,10 +11,9 @@ import SwiftUI
 // It is part of the UI bot not the View, thats is why I import SwiftUI
 
 class EmojiMemoryGame:ObservableObject {
-    static let emojis: Array<String> = ["🚗","🚕","🏎️","🚖","🚡","🚠","🚲","🛵","🚘","🚃","🚋","🚆","🛰️","🚁","⛵️","🛶","🚤","🛩️","🛥️","🛸","🚀"];
-    static func createMemoryGame()->MemoryGame<String>{
-        MemoryGame<String>(numberOfPairsOfCards: 4 ){index in emojis[index]; }; // Cuz they are emojis, "in" just separates the argument and the code which have to be executed
-        // Also Swift knows the types, we can left thme behind (index:int), < -> String >, return too (before the emoji), and createCardContent: also
+    private static let emojis: Array<String> = ["🚗","🚕","🏎️","🚖","🚡","🚠","🚲","🛵","🚘","🚃","🚋","🚆","🛰️","🚁","⛵️","🛶","🚤","🛩️","🛥️","🛸","🚀"];
+    private static func createMemoryGame()->MemoryGame<String>{
+        MemoryGame<String>(numberOfPairsOfCards: 6 ){index in emojis[index]; };
     }
     @Published private var model: MemoryGame<String> = createMemoryGame();
     
