@@ -12,7 +12,21 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent:Equatable {
     private(set) var cards: Array<Card>;
     
-    private var indexOfTheOneAndOnlyFaceUpCard: Int?;
+    private var indexOfTheOneAndOnlyFaceUpCard: Int?{
+        get{
+            let faceUpCardIndices = cards.indices.filter({ cards[$0].isFaceUp})
+            return faceUpCardIndices.oneAndOnly;
+        }
+        set{
+            for index in cards.indices {
+                if index != newValue{   // newValue is a speical built in keyword ( cuz we can not use indexOfTheOneAndOnlyFaceUpCard in its own definition
+                    cards[index].isFaceUp = false;
+                }else{
+                    cards[index].isFaceUp = true;
+                }
+            }
+        }
+    }
     
     mutating func choose(_ card: Card){
         if let chosenIndex = cards.firstIndex(where: {  $0.id == card.id }), !cards[chosenIndex].isFaceUp,
@@ -24,14 +38,10 @@ struct MemoryGame<CardContent> where CardContent:Equatable {
                     cards[chosenIndex].isMatched = true;
                     cards[potentialMatchIndex].isMatched = true;
                 }
-                indexOfTheOneAndOnlyFaceUpCard = nil;
+                cards[chosenIndex].isFaceUp = true;
             } else {
-                for index in cards.indices {
-                    cards[index].isFaceUp = false;
-                }
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex;
             }
-            cards[chosenIndex].isFaceUp.toggle();
         }
     }
     init(numberOfPairsOfCards: Int, createCardContent: (Int)->CardContent){
@@ -48,5 +58,16 @@ struct MemoryGame<CardContent> where CardContent:Equatable {
         var isFaceUp = false;
         var isMatched = false;
         let content: CardContent
+    }
+}
+
+
+extension Array{
+    var oneAndOnly: Element? {
+        if count == 1 {    // self because it is an Array; same as self.count
+            return first;   // same as self.first
+        }else{
+            return nil;
+        }
     }
 }
