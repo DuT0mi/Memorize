@@ -18,6 +18,9 @@ struct EmojiMemoryGameView: View {
         }
          .foregroundColor(.red).padding(.horizontal)
         }
+    
+    
+    
     @ViewBuilder
     private func cardView(for card: EmojiMemoryGame.Card)->some View{
         if card.isMatched && !card.isFaceUp{
@@ -39,39 +42,27 @@ struct CardView: View{
         self.card = card;
     }
     var body: some View{
-        GeometryReader(content: {
+        GeometryReader {
             geometry in
              ZStack {
-                 let shape: RoundedRectangle = RoundedRectangle(cornerRadius:DrawingConstants.cornerRadius);
-                if card.isFaceUp{
-                    shape
-                        .fill()
-                        .foregroundColor(.white);
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth);
+
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90),clockwise: true).opacity(DrawingConstants.circleOpacity).padding(DrawingConstants.circlePadding);
-                    Text(card.content).font(font(in: geometry.size))
-                    
-                } else if card.isMatched{
-                    shape.opacity(DrawingConstants.opacity);
-                }
-                else {
-                    shape.fill();
-                }
+                 Text(card.content).font(font(in: geometry.size))
             }
-        })
+             .cardify(isFaceUp: card.isFaceUp);
+        }
     }
     private func font(in size:CGSize)-> Font{
         Font.system(size: min(size.width,size.height) * DrawingConstants.scaleFactor);
     }
     private struct DrawingConstants{
-        static let cornerRadius:CGFloat = 10.0;
-        static let lineWidth:CGFloat = 3.0;
         static let scaleFactor:CGFloat = 0.65;
         static let opacity:Double = 0;
         static let circleOpacity:Double = 0.5;
         static let circlePadding:CGFloat = 5;
     }
 }
+
 
 
 
