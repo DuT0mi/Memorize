@@ -47,10 +47,17 @@ struct CardView: View{
              ZStack {
 
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90),clockwise: true).opacity(DrawingConstants.circleOpacity).padding(DrawingConstants.circlePadding);
-                 Text(card.content).font(font(in: geometry.size))
+                 Text(card.content)
+                     .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                     .animation(Animation.easeInOut(duration: 2).repeatForever())
+                     .font(Font.system(size: DrawingConstants.fontSystemConstant))
+                     .scaleEffect(scale(thatFits:geometry.size))
             }
              .cardify(isFaceUp: card.isFaceUp);
         }
+    }
+    private func scale(thatFits size:CGSize)-> CGFloat{
+        return min(size.width, size.height) / (DrawingConstants.fontSystemConstant/DrawingConstants.scaleFactor);
     }
     private func font(in size:CGSize)-> Font{
         Font.system(size: min(size.width,size.height) * DrawingConstants.scaleFactor);
@@ -60,6 +67,7 @@ struct CardView: View{
         static let opacity:Double = 0;
         static let circleOpacity:Double = 0.5;
         static let circlePadding:CGFloat = 5;
+        static let fontSystemConstant:CGFloat = 32.0;
     }
 }
 

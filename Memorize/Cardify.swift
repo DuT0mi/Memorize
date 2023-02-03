@@ -18,11 +18,13 @@ struct Cardify: ViewModifier {
                    .fill()
                    .foregroundColor(.white);
                shape.strokeBorder(lineWidth: DrawingConstants.lineWidth);
-               content
+               // content // On-screen when isFaceUp is true else will be off-screen
            }
            else {
                shape.fill();
            }
+            content
+                .opacity(isFaceUp ? 1 : 0) // Now it is always on-screen
        }
     }
     private struct DrawingConstants{
