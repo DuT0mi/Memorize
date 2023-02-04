@@ -112,6 +112,8 @@ struct EmojiMemoryGameView: View {
 struct CardView: View{
     private let card:EmojiMemoryGame.Card;
     
+    @State private var animateBonusReamining:Double = 0.0;
+    
     init(_ card: EmojiMemoryGame.Card){
         self.card = card;
     }
@@ -119,13 +121,25 @@ struct CardView: View{
         GeometryReader {
             geometry in
              ZStack {
-
-                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90),clockwise: true).opacity(DrawingConstants.circleOpacity).padding(DrawingConstants.circlePadding);
-                 Text(card.content)
-                     .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-                     .animation(Animation.easeInOut(duration: 2).repeatForever())
-                     .font(Font.system(size: DrawingConstants.fontSystemConstant))
-                     .scaleEffect(scale(thatFits:geometry.size))
+                 Group{
+                     if card.isConsumingBonusTime{
+                         Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: (1 - animateBonusReamining) * 360 - 90),clockwise: true).onAppear{
+                             animateBonusReamining = card.bonusRemaining
+                             withAnimation(.linear(duration: card.bonusTimeRemaining)){
+                                 animateBonusReamining = 0
+                             }
+                         }
+                     }else{
+                         Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: (1 - card.bonusRemaining) * 360 - 90),clockwise: true)
+                     }
+                 }   .opacity(DrawingConstants.circleOpacity)
+                     .padding(DrawingConstants.circlePadding);
+                 withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)){
+                     Text(card.content)
+                         .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                         .font(Font.system(size: DrawingConstants.fontSystemConstant))
+                         .scaleEffect(scale(thatFits:geometry.size))
+                 }
             }
              .cardify(isFaceUp: card.isFaceUp);
         }
