@@ -19,9 +19,23 @@ struct EmojiMemoryGameView: View {
             }.padding()
         
         }
+    @State private var dealt = Set<Int>() // Set is like HashSets in Java, there can not be ducplicated data in it
+    private func deal(_ card:EmojiMemoryGame.Card){
+        dealt.insert(card.id);
+    }
+    private func isUndealt(_ card: EmojiMemoryGame.Card)-> Bool{
+        return !dealt.contains(card.id);
+    }
     var gameBody: some View{
         AspectVGrid(items:game.cards, aspectRatio: 2/3){ card in
             cardView(for: card);
+        }.onAppear{
+            withAnimation{
+                for card in game.cards{
+                    deal(card);
+                }
+                
+            }
         }
          .foregroundColor(.red)
     }
@@ -35,12 +49,13 @@ struct EmojiMemoryGameView: View {
     
     @ViewBuilder
     private func cardView(for card: EmojiMemoryGame.Card)->some View{
-        if card.isMatched && !card.isFaceUp{
+        if isUndealt(card) || (card.isMatched && !card.isFaceUp){
             Color.clear
         }
         else{
             CardView(card)
                 .padding(4)
+                .transition(AnyTransition.asymmetric(insertion: .scale, removal: .opacity)).animation(.easeInOut(duration: 2))
                 .onTapGesture{
                     withAnimation{
                         game.choose(card);
