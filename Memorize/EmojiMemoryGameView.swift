@@ -13,23 +13,38 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
     var body: some View {
+        VStack{
+            gameBody;
+            shuffle;
+            }.padding()
+        
+        }
+    var gameBody: some View{
         AspectVGrid(items:game.cards, aspectRatio: 2/3){ card in
             cardView(for: card);
         }
-         .foregroundColor(.red).padding(.horizontal)
+         .foregroundColor(.red)
+    }
+    var shuffle:some View{
+        Button("Shuffle"){
+            withAnimation(.easeInOut(duration: 1)){
+                game.shuffle();
+            } // Also works wout any argument
         }
-    
-    
+    }
     
     @ViewBuilder
     private func cardView(for card: EmojiMemoryGame.Card)->some View{
         if card.isMatched && !card.isFaceUp{
-            Rectangle().opacity(0);
-        }else{
+            Color.clear
+        }
+        else{
             CardView(card)
                 .padding(4)
                 .onTapGesture{
-                    game.choose(card);
+                    withAnimation{
+                        game.choose(card);
+                    }
                 }
         }
     }
