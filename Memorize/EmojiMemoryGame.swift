@@ -14,7 +14,7 @@ class EmojiMemoryGame:ObservableObject {
     
     private static let emojis = ["🚗","🚕","🏎️","🚖","🚡","🚠","🚲","🛵","🚘","🚃","🚋","🚆","🛰️","🚁","⛵️","🛶","🚤","🛩️","🛥️","🛸","🚀"];
     private static func createMemoryGame()->MemoryGame<String>{
-        MemoryGame<String>(numberOfPairsOfCards: 7 ){index in emojis[index]; };
+        MemoryGame<String>(numberOfPairsOfCards: 8 ){index in emojis[index]; };
     }
     @Published private var model = createMemoryGame();
     
@@ -29,5 +29,8 @@ class EmojiMemoryGame:ObservableObject {
     }
     func shuffle(){
         model.shuffle();
+    }
+    func restart(){
+        model = EmojiMemoryGame.createMemoryGame();
     }
 }
