@@ -13,14 +13,16 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     @Namespace private var dealingNamespace;
     var body: some View {
-        VStack{
-            gameBody;
+        ZStack(alignment: .bottom){
+            VStack{
+                gameBody;
+                HStack{
+                    restart;
+                    Spacer();
+                    shuffle;
+                }.padding(.horizontal)
+            }
             deckBody;
-            HStack{
-                restart;
-                Spacer();
-                shuffle;
-            }.padding(.horizontal)
             }.padding()
         
         }
